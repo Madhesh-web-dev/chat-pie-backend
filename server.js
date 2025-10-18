@@ -42,7 +42,7 @@ let users = {};
 chatNamespace.on('connection', (socket) => {
   console.log('User connected');
   users[socket.id] = { id: socket.id, name: "Anonymous" };
-  socket.broadcast.emit('update_user_count', Object.keys(users).length);
+  chatNamespace.emit('update_user_count', Object.keys(users).length);
   socket.emit('update_user_count', Object.keys(users).length);
 
   socket.emit('chat', chats);
@@ -70,13 +70,13 @@ chatNamespace.on('connection', (socket) => {
       },
     }
     chats.push(newRoom);
-    socket.broadcast.emit('add-new-room' , newRoom);
+    chatNamespace.emit('add-new-room' , newRoom);
   })
 
-  socket.on('disconnect', () => {
+  socket.on('disconnect', (data) => {
     delete users[socket.id];
     console.log('User disconnected', Object.keys(users).length);
-    socket.broadcast.emit("user_count", Object.keys(users).length);
+    chatNamespace.emit("user_count", Object.keys(users).length);
   });
 });
 
