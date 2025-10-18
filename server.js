@@ -70,7 +70,7 @@ chatNamespace.on('connection', (socket) => {
       },
     }
     chats.push(newRoom);
-    socket.emit('add-new-room' , newRoom)
+    socket.broadcast.emit('add-new-room' , newRoom);
   })
 
   socket.on('disconnect', () => {
